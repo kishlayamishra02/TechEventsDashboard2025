@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Events Dashboard India 2025</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>Tech Events Dashboard India 2025</h1>
+            <p>Discover tech events tailored for college students across India - Kishlaya Mishra</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="dashboard-layout">
+                
+                <!-- Sidebar Filters -->
+                <aside class="sidebar">
+                    <div class="filters-header">
+                        <h3>Filters</h3>
+                        <button class="btn btn--secondary btn--sm" id="resetFilters">Reset All</button>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="filter-group">
+                        <label class="form-label">Search Events</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search events, companies, topics...">
+                    </div>
+
+                    <!-- Location Filter -->
+                    <div class="filter-group">
+                        <label class="form-label">Location/City</label>
+                        <select class="form-control" id="locationFilter">
+                            <option value="">All Cities</option>
+                        </select>
+                    </div>
+
+                    <!-- Topic Filter -->
+                    <div class="filter-group">
+                        <label class="form-label">Topics</label>
+                        <div class="checkbox-group" id="topicFilters">
+                            <!-- Topic checkboxes will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Event Type Filter -->
+                    <div class="filter-group">
+                        <label class="form-label">Event Type</label>
+                        <div class="checkbox-group" id="eventTypeFilters">
+                            <!-- Event type checkboxes will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Company Filter -->
+                    <div class="filter-group">
+                        <label class="form-label">Company</label>
+                        <select class="form-control" id="companyFilter">
+                            <option value="">All Companies</option>
+                        </select>
+                    </div>
+
+                    <!-- Quick Filters -->
+                    <div class="filter-group">
+                        <label class="form-label">Quick Filters</label>
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="studentFriendlyFilter">
+                                <span>Student Friendly</span>
+                            </label>
+                            <label class="toggle-label">
+                                <input type="checkbox" id="freeEventsFilter">
+                                <span>Free Events</span>
+                            </label>
+                            <label class="toggle-label">
+                                <input type="checkbox" id="virtualEventsFilter">
+                                <span>Virtual Events</span>
+                            </label>
+                            <label class="toggle-label">
+                                <input type="checkbox" id="upcomingDeadlineFilter">
+                                <span>Registration Open</span>
+                            </label>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content Area -->
+                <div class="content-area">
+                    
+                    <!-- Statistics Dashboard -->
+                    <section class="stats-section">
+                        <h2>Event Statistics</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalEventsCount">0</div>
+                                <div class="stat-label">Total Events</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="freeEventsCount">0</div>
+                                <div class="stat-label">Free Events</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="virtualEventsCount">0</div>
+                                <div class="stat-label">Virtual Events</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="upcomingEventsCount">0</div>
+                                <div class="stat-label">Upcoming Events</div>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <h4>Events by City</h4>
+                                <canvas id="cityChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h4>Events by Month</h4>
+                                <canvas id="monthChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h4>Events by Type</h4>
+                                <canvas id="typeChart"></canvas>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Controls -->
+                    <div class="controls-bar">
+                        <div class="results-info">
+                            <span id="resultsCount">0 events found</span>
+                        </div>
+                        <div class="controls-actions">
+                            <select class="form-control sort-select" id="sortFilter">
+                                <option value="date">Sort by Date</option>
+                                <option value="name">Sort by Name</option>
+                                <option value="deadline">Sort by Registration Deadline</option>
+                                <option value="city">Sort by City</option>
+                            </select>
+                            <button class="btn btn--secondary btn--sm" id="exportBtn">Export CSV</button>
+                        </div>
+                    </div>
+
+                    <!-- Events Grid -->
+                    <div class="events-grid" id="eventsGrid">
+                        <!-- Event cards will be populated by JavaScript -->
+                    </div>
+
+                    <!-- No Results Message -->
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <h3>No events found</h3>
+                        <p>Try adjusting your filters or search criteria.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Event Details Modal -->
+    <div class="modal-overlay" id="modalOverlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Event Details</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Event details will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--primary" id="addToCalendarBtn">Add to Calendar</button>
+                <button class="btn btn--secondary" id="modalCloseBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
